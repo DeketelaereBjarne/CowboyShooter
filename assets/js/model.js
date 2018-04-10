@@ -8,10 +8,28 @@ let Context = {
         return this.context;
     }
 };
-
+let HealthBar = function(){
+    this.healthBarImage = null;
+    this.incrValue = 5;
+    this.maxHealth = 100;
+    this.currentHealth = this.maxHealth;
+    this.increase = function(){
+        if ((this.currentHealth+this.incrValue)<this.maxHealth)
+            this.currentHealth+=this.incrValue;
+    };
+    this.decrease = function(damage){
+        if ((this.currentHealth-this.incrValue)>0) {
+            this.currentHealth -= this.incrValue;
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
 
 let Player = function(xPos,yPos,config,scene){
     console.log(this);
+    this.healthBar = new HealthBar();
     this.name=config.name;
     this.config=config;
     this.playerSprite=scene.physics.add.sprite(xPos,yPos,'dude').setScale(0.2).setBounce(0.2).setCollideWorldBounds(true);
@@ -20,7 +38,11 @@ let Player = function(xPos,yPos,config,scene){
     this.setCollisionWith=function(sprite){
         scene.physics.add.collider(this.playerSprite, sprite);
     };
-
+    this.takeDamage = function(damage){
+        if(!this.healthBar.decrease(damage)){
+            //you died
+        }
+    };
     this.moveLeft = function(){
         this.playerSprite.setVelocityX(-160);
     };
