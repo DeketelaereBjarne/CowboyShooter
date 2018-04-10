@@ -9,36 +9,28 @@ let Context = {
     }
 };
 
-let ShapeDimension = function(xPos,yPos){
-    this.x=xPos;
-    this.y=yPos;
-};
 
-let Player = function(xPos,yPos,name){
-    this.name=name;
-    ShapeDimension.call(xPos,yPos);
+let Player = function(xPos,yPos,config,scene){
+    console.log(this);
+    this.name=config.name;
+    this.config=config;
+    this.playerSprite=scene.physics.add.sprite(xPos,yPos,'dude').setScale(0.2).setBounce(0.2).setCollideWorldBounds(true);
     this.width=0;
     this.height=0;
+    this.setCollisionWith=function(sprite){
+        scene.physics.add.collider(this.playerSprite, sprite);
+    };
+
     this.moveLeft = function(){
-        this.x--;
+        this.playerSprite.setVelocityX(-160);
     };
     this.moveRight = function(){
-        this.x++;
+        this.playerSprite.setVelocityX(160);
     };
     this.jump=function(){
+        this.playerSprite.setVelocityY(-330);
+    };
+    this.shoot=function(){
 
     };
-    this.cover=function(){
-
-    };
-    this.draw=function(){
-
-    };
-};
-
-Player.prototype = Object.create(ShapeDimension.prototype);
-Player.prototype.constructor = ShapeDimension;
-let Level = function(){
-    this.maxleft=0;
-    this.maxright=10;
 };
