@@ -13,6 +13,9 @@ let HealthBar = function(){
     this.incrValue = 5;
     this.maxHealth = 100;
     this.currentHealth = this.maxHealth;
+    this.getHealth = function(){
+        return this.currentHealth +" : "+this.maxHealth;
+    };
     this.increase = function(){
         if ((this.currentHealth+this.incrValue)<this.maxHealth)
             this.currentHealth+=this.incrValue;

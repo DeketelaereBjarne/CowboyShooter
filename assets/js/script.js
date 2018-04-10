@@ -8,11 +8,10 @@ let config = {
     player2: {
         name: "Player 2",
     },
-    p2Name: "Player 2",
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: {y: 300},
+            gravity: {y: 400},
             debug: false
         }
     },
@@ -23,9 +22,9 @@ let config = {
     }
 };
 $(document).ready(function () {
-    let game = new Phaser.Game(config);
+    //game = new Phaser.Game(config);
 });
-
+let game=new Phaser.Game(config);
 let platform;
 let player1;
 let player2;
@@ -44,6 +43,7 @@ function create() {
     let background = this.add.sprite(400, 300, 'sky');
     background.scaleX = 1.2;
     background.scaleY = 1.25;
+
     platform = this.physics.add.staticGroup();
     platform.create(400, 580, 'ground').setScale(1).refreshBody();
 
@@ -54,6 +54,17 @@ function create() {
     player1.setCollisionWith(player2.playerSprite);
     player2.setCollisionWith(platform);
     player2.setCollisionWith(player1.playerSprite);
+
+    let healthbarPlayer1 = this.add.text(10,10,player1.name+"\nHealth "+player1.healthBar.getHealth(),{
+        color:"black",
+        font: "22px Impact"
+    });
+
+    let healthbarPlayer2 = this.add.text(640,10,player2.name+"\nHealth "+player2.healthBar.getHealth(),{
+        color:"black",
+        font: "22px Impact"
+    });
+
 
     //TODO anims
     this.anims.create({
@@ -90,8 +101,7 @@ let handlePlayer1Keys = function(e){
         player1.playerSprite.setVelocityX(0);
 
     }
-    if (e.which==122 && player1.playerSprite.body.touching.down)
-    {
+    if (e.which==122 && player1.playerSprite.body.touching.down) {
         player1.jump();
     }
 };
@@ -111,8 +121,7 @@ let handlePlayer2Keys = function(){
         player2.playerSprite.setVelocityX(0);
 
     }
-    if (cursors.up.isDown && player1.playerSprite.body.touching.down)
-    {
+    if (cursors.up.isDown && player2.playerSprite.body.touching.down) {
         player2.jump();
     }
 };
@@ -122,4 +131,7 @@ function update() {
     handlePlayer2Keys();
     $("body").keypress(handlePlayer1Keys);
 
+    /*let somestuff = "yee";
+    let style = {};
+    let someshit=game.add.text(this.world.centerX-300,0,somestuff,style);*/
 }
