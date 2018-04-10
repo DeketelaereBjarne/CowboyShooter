@@ -14,7 +14,8 @@ let ShapeDimension = function(xPos,yPos){
     this.y=yPos;
 };
 
-let Player = function(xPos,yPos){
+let Player = function(xPos,yPos,name){
+    this.name=name;
     ShapeDimension.call(xPos,yPos);
     this.width=0;
     this.height=0;
