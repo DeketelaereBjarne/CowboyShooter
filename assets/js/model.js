@@ -50,6 +50,9 @@ let Player = function(xPos,yPos,healthbarXPos,config,scene){
     this.setCollisionWith=function(sprite){
         scene.physics.add.collider(this.playerSprite, sprite);
     };
+    this.playDead =function(){
+        console.log("dead");
+    };
     this.takeDamage = function(damage){
         if(!this.healthBar.decrease(damage)){
             console.log("you died");
