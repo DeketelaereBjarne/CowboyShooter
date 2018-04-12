@@ -31,14 +31,16 @@ let player2;
 let keyboard;
 let healthbarPlayer1;
 let healthbarPlayer2;
+let bullets;
+let cursors;
 
 function preload() {
     console.log("preload called");
     this.load.image('sky', 'assets/media/pvpbackground.jpg');
     this.load.image('ground', 'assets/media/ground.png');
-    this.load.image('dude', 'assets/media/player.jpg');
     this.load.spritesheet('healthbar','assets/media/healthbar.png',{frameWidth:490,frameHeight:50});
     this.load.spritesheet('cowboy','assets/media/cowboy.png',{frameWidth: 328,frameHeight: 495});
+    this.load.image('bullet','assets/media/bullet.png');
 
 }
 
@@ -61,6 +63,16 @@ function create() {
     player2.setCollisionWith(player1.playerSprite);
 
 
+    bullets = [];
+    bullets.enableBody=true;
+    bullets.checkWorldBounds=true;
+
+
+    bullets.collideWorldBounds=true;
+
+
+    this.physics.add.overlap(bullets,player1.playerSprite,collisionhandler,null,this);
+    this.physics.add.overlap(bullets,player2.playerSprite,collisionhandler,null,this);
 
     healthbarPlayer1 = this.add.text(10,10,player1.name+"\nHealth "+player1.healthBar.getHealth(),{
         color:"black",
@@ -71,6 +83,7 @@ function create() {
         color:"black",
         font: "22px Impact"
     });
+
 
 
 
@@ -107,8 +120,18 @@ function create() {
     });
 
     keyboard = this.input.keyboard;
-
+    cursors = keyboard.createCursorKeys();
 }
+let collisionhandler = function(bullet,player){
+    bullet.destroy();
+    if(cursors.space.isDown){
+        player1.takeDamage(10);
+    } else {
+        player2.takeDamage(10);
+    }
+
+    //player.takeDamage(10);
+};
 
 let handlePlayer1Keys = function(e){
 
@@ -129,7 +152,6 @@ let handlePlayer1Keys = function(e){
 };
 
 let handlePlayer2Keys = function(){
-    let cursors = keyboard.createCursorKeys();
 
     if (cursors.left.isDown) {
         player2.moveLeft();
@@ -145,7 +167,16 @@ let handlePlayer2Keys = function(){
     if (cursors.up.isDown && player2.playerSprite.body.touching.down) {
         player2.jump();
     }
+
+    let currentTime = new Date();
+    //(currentTime-player2.lastShot)/1000>=0.5
+
+    if(cursors.space.isDown){
+        console.log("shoot called");
+        player2.shoot();
+    }
 };
+
 
 function update() {
     //console.log("update called");
@@ -153,10 +184,17 @@ function update() {
     $("body").keypress(handlePlayer1Keys);
 
 
+
+
+
+
     //healthbar
     player1.healthBar.updateHealthbar();
     player2.healthBar.updateHealthbar();
     healthbarPlayer1.setText(player1.name+"\nHealth "+player1.healthBar.getHealth());
     healthbarPlayer2.setText(player2.name+"\nHealth "+player2.healthBar.getHealth());
+
+    //end of game
+    //TODO check health and choose a winner.
 
 }

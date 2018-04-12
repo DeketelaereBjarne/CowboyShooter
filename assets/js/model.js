@@ -38,6 +38,7 @@ let HealthBar = function(xPos,yPos,scene){
     };
 };
 
+
 let Player = function(xPos,yPos,healthbarXPos,config,scene){
     console.log(this);
     this.healthBar = new HealthBar(healthbarXPos,70,scene);
@@ -65,10 +66,36 @@ let Player = function(xPos,yPos,healthbarXPos,config,scene){
         this.playerSprite.setVelocityX(160);
     };
     this.jump=function(){
-        this.playerSprite.anims.play('jump',5);
+        this.playerSprite.anims.play('jump');
         this.playerSprite.setVelocityY(-330);
     };
     this.shoot=function(){
+        let cursors = keyboard.createCursorKeys();
+        this.playerSprite.anims.play('shoot');
+        if(cursors.up.isDown){
+            let bullet =scene.physics.add.sprite(this.playerSprite.x,this.playerSprite.y-65,'bullet').setScale(0.2);
+            bullet.body.allowGravity=false;
+            bullet.setVelocityY(-260);
+            bullets.push(bullet);
+        } else if(cursors.left.isDown){
+            let bullet =scene.physics.add.sprite(this.playerSprite.x-37,this.playerSprite.y,'bullet').setScale(0.2);
+            bullet.body.allowGravity=false;
+            bullet.body.checkCollision=true;
+            bullet.setVelocityX(-260);
+            bullets.push(bullet);
+        } else if(cursors.right.isDown){
+            let bullet =scene.physics.add.sprite(this.playerSprite.x+37,this.playerSprite.y,'bullet').setScale(0.2);
+            bullet.body.allowGravity=false;
+            bullet.setVelocityX(260);
+            bullets.push(bullet);
+        }
+
 
     };
+};
+
+let Bullet = function(bullet){
+    this.bulletSprite=bullet;
+    this.damage=10;
+    bullets.push(bullet);
 };
