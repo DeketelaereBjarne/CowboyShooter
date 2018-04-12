@@ -39,7 +39,7 @@ let HealthBar = function(xPos,yPos,scene){
 };
 
 let Player = function(xPos,yPos,healthbarXPos,config,scene){
-    //console.log(this);
+    console.log(this);
     this.healthBar = new HealthBar(healthbarXPos,70,scene);
     this.name=config.name;
     this.config=config;

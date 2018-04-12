@@ -31,7 +31,6 @@ let player2;
 let keyboard;
 let healthbarPlayer1;
 let healthbarPlayer2;
-let healthbarSprite;
 
 function preload() {
     console.log("preload called");
@@ -39,7 +38,7 @@ function preload() {
     this.load.image('ground', 'assets/media/ground.png');
     this.load.image('dude', 'assets/media/player.jpg');
     this.load.spritesheet('healthbar','assets/media/healthbar.png',{frameWidth:490,frameHeight:50});
-    this.load.spritesheet('cowboy','assets/media/cowboy.png',{frameWidth: 500,frameHeight: 500});
+    this.load.spritesheet('cowboy','assets/media/cowboy.png',{frameWidth: 328,frameHeight: 495});
 
 }
 
