@@ -29,12 +29,15 @@ let platform;
 let player1;
 let player2;
 let keyboard;
+let healthbarPlayer1;
+let healthbarPlayer2;
 
 function preload() {
     console.log("preload called");
     this.load.image('sky', 'assets/media/pvpbackground.jpg');
     this.load.image('ground', 'assets/media/ground.png');
     this.load.image('dude', 'assets/media/player.jpg');
+    //this.load.audio('example','path');
 }
 
 function create() {
@@ -55,12 +58,12 @@ function create() {
     player2.setCollisionWith(platform);
     player2.setCollisionWith(player1.playerSprite);
 
-    let healthbarPlayer1 = this.add.text(10,10,player1.name+"\nHealth "+player1.healthBar.getHealth(),{
+    healthbarPlayer1 = this.add.text(10,10,player1.name+"\nHealth "+player1.healthBar.getHealth(),{
         color:"black",
         font: "22px Impact"
     });
 
-    let healthbarPlayer2 = this.add.text(640,10,player2.name+"\nHealth "+player2.healthBar.getHealth(),{
+    healthbarPlayer2 = this.add.text(640,10,player2.name+"\nHealth "+player2.healthBar.getHealth(),{
         color:"black",
         font: "22px Impact"
     });
@@ -131,7 +134,8 @@ function update() {
     handlePlayer2Keys();
     $("body").keypress(handlePlayer1Keys);
 
-    /*let somestuff = "yee";
-    let style = {};
-    let someshit=game.add.text(this.world.centerX-300,0,somestuff,style);*/
+
+    healthbarPlayer1.setText(player1.name+"\nHealth "+player1.healthBar.getHealth());
+    healthbarPlayer2.setText(player2.name+"\nHealth "+player2.healthBar.getHealth());
+
 }

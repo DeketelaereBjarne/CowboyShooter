@@ -22,8 +22,12 @@ let HealthBar = function(){
     };
     this.decrease = function(damage){
         if ((this.currentHealth-this.incrValue)>0) {
-            this.currentHealth -= this.incrValue;
-            return true;
+            this.currentHealth -= damage;
+            if(this.currentHealth==0){
+                return false;
+            } else {
+                return true;
+            }
         } else {
             return false;
         }
@@ -31,7 +35,7 @@ let HealthBar = function(){
 };
 
 let Player = function(xPos,yPos,config,scene){
-    console.log(this);
+    //console.log(this);
     this.healthBar = new HealthBar();
     this.name=config.name;
     this.config=config;
@@ -43,7 +47,7 @@ let Player = function(xPos,yPos,config,scene){
     };
     this.takeDamage = function(damage){
         if(!this.healthBar.decrease(damage)){
-            //you died
+            console.log("you died");
         }
     };
     this.moveLeft = function(){
