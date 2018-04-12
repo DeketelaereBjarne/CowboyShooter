@@ -34,6 +34,7 @@ let healthbarPlayer1;
 let healthbarPlayer2;
 let bullets;
 let cursors;
+let gameover;
 
 function preload() {
     console.log("preload called");
@@ -86,6 +87,13 @@ function create() {
         font: "22px Impact"
     });
 
+    let message = "Game Over :( ... has won";
+    gameover = this.add.text(220,100,message,{
+        color:"black",
+        font: "40px Impact"
+    });
+    gameover.visible=false;
+
 
     //TODO anims
     this.anims.create({
@@ -131,7 +139,6 @@ let collisionhandler = function (bullet, player) {
         player2.takeDamage(10);
     }
 
-    //player.takeDamage(10);
 };
 
 let handlePlayer1Keys = function (e) {
@@ -193,5 +200,19 @@ function update() {
 
     //end of game
     //TODO check health and choose a winner.
+    if(player1.healthBar.currentHealth==0){
+        player1.playDead();
+        gameOverMessage(player2);
+    } else if(player2.healthBar.currentHealth==0){
+        player2.playDead();
+        gameOverMessage(player2);
+    }
 
 }
+
+let gameOverMessage=function(deadplayer){
+    let message = "Game Over :( "+deadplayer.name+" has won";
+    gameover.setText(message);
+    gameover.visible=true;
+
+};
