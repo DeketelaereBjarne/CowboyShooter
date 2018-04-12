@@ -140,22 +140,30 @@ let collisionhandler = function(bullet,player){
 
 };
 
-let handlePlayer1Keys = function(e){
+let handlePlayer1Keys = function(){
 
-    if (e.which==113) {
+    keyboard.on('keydown_Z',function(event){
+        if(player1.playerSprite.body.touching.down){
+            player1.jump();
+        }
+    });
+    keyboard.on('keydown_Q',function(event){
         player1.moveLeft();
-
-    } else if (e.which==100) {
+    });
+    keyboard.on('keydown_D',function(event){
         player1.moveRight();
+    });
+    keyboard.on('keydown_S',function(event){
+        player1.shoot();
+    });
 
-    } else {
-        player1.playerSprite.anims.play('pause');
-        player1.playerSprite.setVelocityX(0);
+    player1.playerSprite.anims.play('pause');
+    player1.playerSprite.setVelocityX(0);
+    /*
 
-    }
-    if (e.which==122 && player1.playerSprite.body.touching.down) {
-        player1.jump();
-    }
+    if(e.which==115){
+        player1.shoot();
+    }*/
 };
 
 let handlePlayer2Keys = function(){
@@ -179,8 +187,7 @@ let handlePlayer2Keys = function(){
     //(currentTime-player2.lastShot)/1000>=0.5
 
     if(cursors.space.isDown){
-        console.log("shoot called");
-        player2.shoot();
+        player2.shoot(cursors.up,cursors.left,cursors.right);
     }
 };
 
@@ -188,12 +195,7 @@ let handlePlayer2Keys = function(){
 function update() {
     //console.log("update called");
     handlePlayer2Keys();
-    $("body").keypress(handlePlayer1Keys);
-
-
-
-
-
+    handlePlayer1Keys();
 
     //healthbar
     player1.healthBar.updateHealthbar();
