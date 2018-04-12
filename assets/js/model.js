@@ -39,7 +39,7 @@ let Player = function(xPos,yPos,config,scene){
     this.healthBar = new HealthBar();
     this.name=config.name;
     this.config=config;
-    this.playerSprite=scene.physics.add.sprite(xPos,yPos,'dude').setScale(0.2).setBounce(0.2).setCollideWorldBounds(true);
+    this.playerSprite=scene.physics.add.sprite(xPos,yPos,'cowboy').setScale(0.2).setBounce(0.2).setCollideWorldBounds(true);
     this.width=0;
     this.height=0;
     this.setCollisionWith=function(sprite){
@@ -51,12 +51,17 @@ let Player = function(xPos,yPos,config,scene){
         }
     };
     this.moveLeft = function(){
+        this.playerSprite.flipX = true;
+        this.playerSprite.anims.play('left',true);
         this.playerSprite.setVelocityX(-160);
     };
     this.moveRight = function(){
+        this.playerSprite.flipX = false;
+        this.playerSprite.anims.play('right',true);
         this.playerSprite.setVelocityX(160);
     };
     this.jump=function(){
+        this.playerSprite.anims.play('jump',5);
         this.playerSprite.setVelocityY(-330);
     };
     this.shoot=function(){
