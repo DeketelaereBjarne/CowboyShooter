@@ -37,7 +37,9 @@ function preload() {
     this.load.image('sky', 'assets/media/pvpbackground.jpg');
     this.load.image('ground', 'assets/media/ground.png');
     this.load.image('dude', 'assets/media/player.jpg');
-    //this.load.audio('example','path');
+
+    this.load.spritesheet('cowboy','assets/media/cowboy.png',{frameWidth: 500,frameHeight: 500});
+
 }
 
 function create() {
@@ -69,21 +71,37 @@ function create() {
     });
 
 
+
     //TODO anims
     this.anims.create({
         key: 'left',
+        frames: this.anims.generateFrameNumbers('cowboy',{start:2,end:4}),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
+        key:'pause',
+        frames: [{key:'cowboy',frame:2}],
+        frameRate:10,
+        repeat:-1
+    });
+    this.anims.create({
         key: 'right',
+        frames: this.anims.generateFrameNumbers('cowboy',{start:2,end:4}),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'shoot',
+        frames: [{key:'cowboy',frame:1}],
         frameRate: 10,
         repeat: -1
+    });
+    this.anims.create({
+        key: 'jump',
+        frames: [{key:'cowboy',frame:5},{key:'cowboy',frame:2}],
+        frameRate: 10,
+        repeat: -1,
     });
 
     keyboard = this.input.keyboard;
@@ -95,12 +113,11 @@ let handlePlayer1Keys = function(e){
     if (e.which==113) {
         player1.moveLeft();
 
-        //player.anims.play('left', true);
     } else if (e.which==100) {
         player1.moveRight();
 
-        //player.anims.play('right', true);
     } else {
+        player1.playerSprite.anims.play('pause');
         player1.playerSprite.setVelocityX(0);
 
     }
@@ -115,13 +132,12 @@ let handlePlayer2Keys = function(){
     if (cursors.left.isDown) {
         player2.moveLeft();
 
-        //player.anims.play('left', true);
     } else if (cursors.right.isDown) {
         player2.moveRight();
 
-        //player.anims.play('right', true);
     } else {
         player2.playerSprite.setVelocityX(0);
+        player2.playerSprite.anims.play('pause');
 
     }
     if (cursors.up.isDown && player2.playerSprite.body.touching.down) {
