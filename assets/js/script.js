@@ -126,6 +126,12 @@ function create() {
         frameRate: 10,
         repeat: -1,
     });
+    this.anims.create({
+        key: 'dead',
+        frames: [{key: config.characterType, frame: 6}],
+        frameRate: 10,
+        repeat: -1,
+    });
 
     keyboard = this.input.keyboard;
     cursors = keyboard.createCursorKeys();
@@ -161,12 +167,7 @@ let handlePlayer1Keys = function () {
 
     player1.playerSprite.anims.play('pause');
     player1.playerSprite.setVelocityX(0);
-    /*
 
-    }
-    if (e.which==122 && player1.playerSprite.body.touching.down) {
-        player1.jump();
-    }
 };
 
 let handlePlayer2Keys = function () {
