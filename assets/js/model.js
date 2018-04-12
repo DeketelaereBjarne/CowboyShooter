@@ -39,12 +39,12 @@ let HealthBar = function(xPos,yPos,scene){
 };
 
 
-let Player = function(xPos,yPos,healthbarXPos,config,scene){
+let Player = function(xPos,yPos,healthbarXPos,config,scene, type){
     console.log(this);
     this.healthBar = new HealthBar(healthbarXPos,70,scene);
     this.name=config.name;
     this.config=config;
-    this.playerSprite=scene.physics.add.sprite(xPos,yPos,'cowboy').setScale(0.2).setBounce(0.2).setCollideWorldBounds(true);
+    this.playerSprite=scene.physics.add.sprite(xPos,yPos,type).setScale(0.2).setBounce(0.2).setCollideWorldBounds(true);
     this.width=0;
     this.height=0;
     this.setCollisionWith=function(sprite){

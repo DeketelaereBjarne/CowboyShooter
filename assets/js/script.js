@@ -2,6 +2,7 @@ let config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    characterType: 'indian',
     player1: {
         name: "Player 1",
     },
@@ -24,7 +25,7 @@ let config = {
 $(document).ready(function () {
     //game = new Phaser.Game(config);
 });
-let game=new Phaser.Game(config);
+let game = new Phaser.Game(config);
 let platform;
 let player1;
 let player2;
@@ -39,9 +40,10 @@ function preload() {
     console.log("preload called");
     this.load.image('sky', 'assets/media/pvpbackground.jpg');
     this.load.image('ground', 'assets/media/ground.png');
-    this.load.spritesheet('healthbar','assets/media/healthbar.png',{frameWidth:490,frameHeight:50});
-    this.load.spritesheet('cowboy','assets/media/cowboy.png',{frameWidth: 328,frameHeight: 495});
-    this.load.image('bullet','assets/media/bullet.png');
+    this.load.spritesheet('healthbar', 'assets/media/healthbar.png', {frameWidth: 490, frameHeight: 50});
+    this.load.spritesheet('cowboy', 'assets/media/cowboy.png', {frameWidth: 328, frameHeight: 495});
+    this.load.spritesheet('indian', 'assets/media/indian.png', {frameWidth: 240, frameHeight: 464});
+    this.load.image('bullet', 'assets/media/bullet.png');
 
 }
 
@@ -56,8 +58,8 @@ function create() {
     platform.create(400, 580, 'ground').setScale(1).refreshBody();
 
 
-    player1 = new Player(150,450,90,config.player1,this);
-    player2 = new Player(350,450,700,config.player2,this);
+    player1 = new Player(150, 450, 90, config.player1, this, config.characterType);
+    player2 = new Player(350, 450, 700, config.player2, this, config.characterType);
     player1.setCollisionWith(platform);
     player1.setCollisionWith(player2.playerSprite);
     player2.setCollisionWith(platform);
@@ -65,23 +67,23 @@ function create() {
 
 
     bullets = [];
-    bullets.enableBody=true;
-    bullets.checkWorldBounds=true;
+    bullets.enableBody = true;
+    bullets.checkWorldBounds = true;
 
 
-    bullets.collideWorldBounds=true;
+    bullets.collideWorldBounds = true;
 
 
-    this.physics.add.overlap(bullets,player1.playerSprite,collisionhandler,null,this);
-    this.physics.add.overlap(bullets,player2.playerSprite,collisionhandler,null,this);
+    this.physics.add.overlap(bullets, player1.playerSprite, collisionhandler, null, this);
+    this.physics.add.overlap(bullets, player2.playerSprite, collisionhandler, null, this);
 
-    healthbarPlayer1 = this.add.text(10,10,player1.name+"\nHealth "+player1.healthBar.getHealth(),{
-        color:"black",
+    healthbarPlayer1 = this.add.text(10, 10, player1.name + "\nHealth " + player1.healthBar.getHealth(), {
+        color: "black",
         font: "22px Impact"
     });
 
-    healthbarPlayer2 = this.add.text(640,10,player2.name+"\nHealth "+player2.healthBar.getHealth(),{
-        color:"black",
+    healthbarPlayer2 = this.add.text(640, 10, player2.name + "\nHealth " + player2.healthBar.getHealth(), {
+        color: "black",
         font: "22px Impact"
     });
 
@@ -93,36 +95,34 @@ function create() {
     gameover.visible=false;
 
 
-
-
     //TODO anims
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('cowboy',{start:2,end:4}),
+        frames: this.anims.generateFrameNumbers(config.characterType, {start: 2, end: 4}),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
-        key:'pause',
-        frames: [{key:'cowboy',frame:2}],
-        frameRate:10,
-        repeat:-1
+        key: 'pause',
+        frames: [{key: config.characterType, frame: 2}],
+        frameRate: 10,
+        repeat: -1
     });
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('cowboy',{start:2,end:4}),
+        frames: this.anims.generateFrameNumbers(config.characterType, {start: 2, end: 4}),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'shoot',
-        frames: [{key:'cowboy',frame:1}],
+        frames: [{key: config.characterType, frame: 1}],
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'jump',
-        frames: [{key:'cowboy',frame:5},{key:'cowboy',frame:2}],
+        frames: [{key: config.characterType, frame: 5}, {key: config.characterType, frame: 2}],
         frameRate: 10,
         repeat: -1,
     });
@@ -130,9 +130,10 @@ function create() {
     keyboard = this.input.keyboard;
     cursors = keyboard.createCursorKeys();
 }
-let collisionhandler = function(bullet,player){
+
+let collisionhandler = function (bullet, player) {
     bullet.destroy();
-    if(cursors.space.isDown){
+    if (cursors.space.isDown) {
         player1.takeDamage(10);
     } else {
         player2.takeDamage(10);
@@ -140,7 +141,8 @@ let collisionhandler = function(bullet,player){
 
 };
 
-let handlePlayer1Keys = function(){
+
+let handlePlayer1Keys = function () {
 
     keyboard.on('keydown_Z',function(event){
         if(player1.playerSprite.body.touching.down){
@@ -161,12 +163,13 @@ let handlePlayer1Keys = function(){
     player1.playerSprite.setVelocityX(0);
     /*
 
-    if(e.which==115){
-        player1.shoot();
-    }*/
+    }
+    if (e.which==122 && player1.playerSprite.body.touching.down) {
+        player1.jump();
+    }
 };
 
-let handlePlayer2Keys = function(){
+let handlePlayer2Keys = function () {
 
     if (cursors.left.isDown) {
         player2.moveLeft();
@@ -197,11 +200,15 @@ function update() {
     handlePlayer2Keys();
     handlePlayer1Keys();
 
+
+
+
+
     //healthbar
     player1.healthBar.updateHealthbar();
     player2.healthBar.updateHealthbar();
-    healthbarPlayer1.setText(player1.name+"\nHealth "+player1.healthBar.getHealth());
-    healthbarPlayer2.setText(player2.name+"\nHealth "+player2.healthBar.getHealth());
+    healthbarPlayer1.setText(player1.name + "\nHealth " + player1.healthBar.getHealth());
+    healthbarPlayer2.setText(player2.name + "\nHealth " + player2.healthBar.getHealth());
 
     //end of game
     //TODO check health and choose a winner.
