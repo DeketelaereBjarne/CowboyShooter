@@ -31,13 +31,14 @@ let player2;
 let keyboard;
 let healthbarPlayer1;
 let healthbarPlayer2;
+let healthbarSprite;
 
 function preload() {
     console.log("preload called");
     this.load.image('sky', 'assets/media/pvpbackground.jpg');
     this.load.image('ground', 'assets/media/ground.png');
     this.load.image('dude', 'assets/media/player.jpg');
-
+    this.load.spritesheet('healthbar','assets/media/healthbar.png',{frameWidth:490,frameHeight:50});
     this.load.spritesheet('cowboy','assets/media/cowboy.png',{frameWidth: 500,frameHeight: 500});
 
 }
@@ -53,12 +54,14 @@ function create() {
     platform.create(400, 580, 'ground').setScale(1).refreshBody();
 
 
-    player1 = new Player(150,450,config.player1,this);
-    player2 = new Player(350,450,config.player2,this);
+    player1 = new Player(150,450,90,config.player1,this);
+    player2 = new Player(350,450,700,config.player2,this);
     player1.setCollisionWith(platform);
     player1.setCollisionWith(player2.playerSprite);
     player2.setCollisionWith(platform);
     player2.setCollisionWith(player1.playerSprite);
+
+
 
     healthbarPlayer1 = this.add.text(10,10,player1.name+"\nHealth "+player1.healthBar.getHealth(),{
         color:"black",
@@ -151,6 +154,9 @@ function update() {
     $("body").keypress(handlePlayer1Keys);
 
 
+    //healthbar
+    player1.healthBar.updateHealthbar();
+    player2.healthBar.updateHealthbar();
     healthbarPlayer1.setText(player1.name+"\nHealth "+player1.healthBar.getHealth());
     healthbarPlayer2.setText(player2.name+"\nHealth "+player2.healthBar.getHealth());
 

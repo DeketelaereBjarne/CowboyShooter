@@ -8,10 +8,11 @@ let Context = {
         return this.context;
     }
 };
-let HealthBar = function(){
-    this.healthBarImage = null;
+let HealthBar = function(xPos,yPos,scene){
+    this.healthBarSprite = scene.add.sprite(xPos,yPos,'healthbar').setScale(0.35);
+    this.healthBarSprite.setFrame(16);
     this.incrValue = 5;
-    this.maxHealth = 100;
+    this.maxHealth = 160;
     this.currentHealth = this.maxHealth;
     this.getHealth = function(){
         return this.currentHealth +" : "+this.maxHealth;
@@ -31,12 +32,15 @@ let HealthBar = function(){
         } else {
             return false;
         }
-    }
+    };
+    this.updateHealthbar = function(){
+        this.healthBarSprite.setFrame(parseInt(this.currentHealth/10));
+    };
 };
 
-let Player = function(xPos,yPos,config,scene){
+let Player = function(xPos,yPos,healthbarXPos,config,scene){
     //console.log(this);
-    this.healthBar = new HealthBar();
+    this.healthBar = new HealthBar(healthbarXPos,70,scene);
     this.name=config.name;
     this.config=config;
     this.playerSprite=scene.physics.add.sprite(xPos,yPos,'cowboy').setScale(0.2).setBounce(0.2).setCollideWorldBounds(true);
