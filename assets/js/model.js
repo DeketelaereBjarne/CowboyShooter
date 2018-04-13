@@ -64,62 +64,65 @@ let Player = function (xPos, yPos, healthbarXPos, config, scene, type) {
     this.playDead = function () {
         this.playerSprite.anims.play('dead', true);
         console.log("dead");
-    };
-    this.takeDamage = function (damage) {
-        if (!this.healthBar.decrease(damage)) {
-            console.log("you died");
-        }
-    };
-    this.moveLeft = function () {
-        this.playerSprite.flipX = true;
-        this.playerSprite.anims.play('left', true);
-        this.playerSprite.setVelocityX(-160);
-        this.direction = 'left';
-        this.draw = false;
-    };
-    this.moveRight = function () {
-        this.playerSprite.flipX = false;
-        this.playerSprite.anims.play('right', true);
-        this.playerSprite.setVelocityX(160);
-        this.direction = 'right';
-        this.draw = false;
+        this.playDead = function () {
+            this.playerSprite.anims.play('dead');
+        };
+        this.takeDamage = function (damage) {
+            if (!this.healthBar.decrease(damage)) {
+                console.log("you died");
+            }
+        };
+        this.moveLeft = function () {
+            this.playerSprite.flipX = true;
+            this.playerSprite.anims.play('left', true);
+            this.playerSprite.setVelocityX(-160);
+            this.direction = 'left';
+            this.draw = false;
+        };
+        this.moveRight = function () {
+            this.playerSprite.flipX = false;
+            this.playerSprite.anims.play('right', true);
+            this.playerSprite.setVelocityX(160);
+            this.direction = 'right';
+            this.draw = false;
 
-    };
-    this.jump = function () {
-        this.playerSprite.anims.play('jump');
-        this.playerSprite.setVelocityY(-330);
-        this.floating = true;
-        this.draw = false;
+        };
+        this.jump = function () {
+            this.playerSprite.anims.play('jump');
+            this.playerSprite.setVelocityY(-330);
+            this.floating = true;
+            this.draw = false;
 
-    };
-    this.shoot = function (up, left, right) {
-        //let cursors = keyboard.createCursorKeys();
-        this.playerSprite.anims.play('shoot');
-        this.recharging = true;
-        this.draw = true;
-        if (up.isDown) {
-            let bullet = scene.physics.add.sprite(this.playerSprite.x, this.playerSprite.y - 65, 'bullet').setScale(0.2);
-            bullet.body.allowGravity = false;
-            bullet.setVelocityY(-260);
-            bullets.push(bullet);
-        } else if (left.isDown || this.direction === 'left') {
-            let bullet = scene.physics.add.sprite(this.playerSprite.x - 37, this.playerSprite.y, 'bullet').setScale(0.2);
-            bullet.body.allowGravity = false;
-            bullet.body.checkCollision = true;
-            bullet.setVelocityX(-260);
-            bullets.push(bullet);
-        } else if (right.isDown || this.direction === 'right') {
-            let bullet = scene.physics.add.sprite(this.playerSprite.x + 37, this.playerSprite.y, 'bullet').setScale(0.2);
-            bullet.body.allowGravity = false;
-            bullet.setVelocityX(260);
-            bullets.push(bullet);
-        }
+        };
+        this.shoot = function (up, left, right) {
+            //let cursors = keyboard.createCursorKeys();
+            this.playerSprite.anims.play('shoot');
+            this.recharging = true;
+            this.draw = true;
+            if (up.isDown) {
+                let bullet = scene.physics.add.sprite(this.playerSprite.x, this.playerSprite.y - 65, 'bullet').setScale(0.2);
+                bullet.body.allowGravity = false;
+                bullet.setVelocityY(-260);
+                bullets.push(bullet);
+            } else if (left.isDown || this.direction === 'left') {
+                let bullet = scene.physics.add.sprite(this.playerSprite.x - 37, this.playerSprite.y, 'bullet').setScale(0.2);
+                bullet.body.allowGravity = false;
+                bullet.body.checkCollision = true;
+                bullet.setVelocityX(-260);
+                bullets.push(bullet);
+            } else if (right.isDown || this.direction === 'right') {
+                let bullet = scene.physics.add.sprite(this.playerSprite.x + 37, this.playerSprite.y, 'bullet').setScale(0.2);
+                bullet.body.allowGravity = false;
+                bullet.setVelocityX(260);
+                bullets.push(bullet);
+            }
 
+        };
     };
-};
 
-let Bullet = function (bullet) {
-    this.bulletSprite = bullet;
-    this.damage = 10;
-    bullets.push(bullet);
-};
+    let Bullet = function (bullet) {
+        this.bulletSprite = bullet;
+        this.damage = 10;
+        bullets.push(bullet);
+    }
+}

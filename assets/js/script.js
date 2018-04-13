@@ -130,15 +130,18 @@ function create() {
         repeat: -1,
     });
     this.anims.create({
-        key: 'dead',
-        frames: [{key: config.characterType, frame: 6}],
-        frameRate: 10,
-        repeat: -1,
-    })
+            key: 'dead',
+            frames: [{key: config.characterType, frame: 6}],
+            frameRate: 10,
+            repeat: -1,
+        }
+    );
 
     keyboard = this.input.keyboard;
     cursors = keyboard.createCursorKeys();
-};
+
+}
+;
 
 let collisionHandler = function (bullet, player) {
     bullet.destroy();
@@ -155,7 +158,6 @@ let handlePlayer1Keys = function () {
 
     if (cursors.p1left.isDown) {
         player1.moveLeft();
-
     } else if (cursors.p1right.isDown) {
         player1.moveRight();
 
