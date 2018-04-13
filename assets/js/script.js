@@ -145,11 +145,11 @@ function create() {
 
 let collisionHandler = function (bullet, player) {
     bullet.destroy();
-    if (cursors.p1space.isDown) {
-        player2.takeDamage(10);
-    }
-    else if (cursors.space.isDown) {
+    if (player == player1.playerSprite) {
         player1.takeDamage(10);
+    }
+    else if (player == player2.playerSprite) {
+        player2.takeDamage(10);
     }
 };
 
