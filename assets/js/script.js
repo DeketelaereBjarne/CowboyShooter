@@ -35,6 +35,7 @@ let healthbarPlayer2;
 let bullets;
 let cursors;
 let gameover;
+let gameoverFlag;
 
 function preload() {
     console.log("preload called");
@@ -50,6 +51,8 @@ function preload() {
 function create() {
     console.log("create called");
 
+
+    gameoverFlag = false;
     let background = this.add.sprite(400, 300, 'sky');
     background.scaleX = 1.2;
     background.scaleY = 1.25;
@@ -221,8 +224,9 @@ function update() {
         }
     }
 
+    if (!gameoverFlag){
     handlePlayer2Keys();
-    handlePlayer1Keys();
+    handlePlayer1Keys();}
 
 
     //healthbar
@@ -247,5 +251,5 @@ let gameOverMessage = function (deadplayer) {
     let message = "Game Over :( " + deadplayer.name + " has won";
     gameover.setText(message);
     gameover.visible = true;
-
+    gameoverFlag = true;
 };
