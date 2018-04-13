@@ -65728,7 +65728,12 @@ var KeyboardManager = new Class({
             left: KeyCodes.LEFT,
             right: KeyCodes.RIGHT,
             space: KeyCodes.SPACE,
-            shift: KeyCodes.SHIFT
+            shift: KeyCodes.SHIFT,
+            p1up: KeyCodes.W,
+            p1right: KeyCodes.D,
+            p1down: KeyCodes.S,
+            p1left: KeyCodes.A,
+            p1space: KeyCodes.X,
         });
     },
 
